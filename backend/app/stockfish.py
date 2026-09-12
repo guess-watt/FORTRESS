@@ -42,21 +42,39 @@ class StockfishAnalyzer:
             multipv=top_n,
         )
 
-        # python-chess returns a dictionary for a single PV
-        # and a list of dictionaries for multiple PVs.
+        # Normalize the result so we always work with a list.
         if not isinstance(results, list):
             results = [results]
 
-        return {
-            "moves": [
+        moves = []
+
+        for result in results:
+            pv = result.get("pv")
+
+            if not pv:
+                continue
+
+            score = result["score"].pov(board.turn)
+
+            evaluation = score.score(mate_score=100000)
+
+            if evaluation is None:
+                continue
+
+            moves.append(
                 {
-                    "move": result["pv"][0].uci(),
-                    "evaluation": result["score"].pov(board.turn).score(
-                        mate_score=100000
-                    ),
+                    "move": pv[0].uci(),
+                    "evaluation": evaluation,
                 }
-                for result in results
-            ]
+            )
+
+        if not moves:
+            raise ValueError(
+                "Stockfish returned no valid principal variation."
+            )
+
+        return {
+            "moves": moves
         }
 
     def close(self):
