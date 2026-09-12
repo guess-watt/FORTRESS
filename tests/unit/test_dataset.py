@@ -12,12 +12,16 @@ class TestDataset(unittest.TestCase):
         self.feature_records = [
             {
                 "average_centipawn_loss": 15.0,
+                "median_centipawn_loss": 12.0,
+                "high_centipawn_loss_percentage": 10.0,
                 "top1_agreement_percentage": 70.0,
                 "top3_agreement_percentage": 90.0,
                 "analyzed_move_count": 40,
             },
             {
                 "average_centipawn_loss": 20.0,
+                "median_centipawn_loss": 18.0,
+                "high_centipawn_loss_percentage": 20.0,
                 "top1_agreement_percentage": 65.0,
                 "top3_agreement_percentage": 85.0,
                 "analyzed_move_count": 35,
@@ -32,8 +36,8 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(
             dataset,
             [
-                [15.0, 70.0, 90.0, 40.0],
-                [20.0, 65.0, 85.0, 35.0],
+                [15.0, 12.0, 10.0, 70.0, 90.0, 40.0],
+                [20.0, 18.0, 20.0, 65.0, 85.0, 35.0],
             ],
         )
 
@@ -51,6 +55,8 @@ class TestDataset(unittest.TestCase):
             feature_names,
             [
                 "average_centipawn_loss",
+                "median_centipawn_loss",
+                "high_centipawn_loss_percentage",
                 "top1_agreement_percentage",
                 "top3_agreement_percentage",
                 "analyzed_move_count",

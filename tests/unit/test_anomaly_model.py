@@ -11,6 +11,8 @@ class TestAnomalyModel(unittest.TestCase):
     def setUp(self):
         self.features = {
             "average_centipawn_loss": 15.0,
+            "median_centipawn_loss": 12.0,
+            "high_centipawn_loss_percentage": 10.0,
             "top1_agreement_percentage": 70.0,
             "top3_agreement_percentage": 90.0,
             "analyzed_move_count": 40,
@@ -21,7 +23,7 @@ class TestAnomalyModel(unittest.TestCase):
 
         self.assertEqual(
             result,
-            [15.0, 70.0, 90.0, 40.0],
+            [15.0, 12.0, 10.0, 70.0, 90.0, 40.0],
         )
 
     def test_missing_features(self):
@@ -34,11 +36,11 @@ class TestAnomalyModel(unittest.TestCase):
 
     def test_model_training(self):
         training_data = [
-            [15.0, 70.0, 90.0, 40.0],
-            [20.0, 65.0, 85.0, 35.0],
-            [25.0, 60.0, 80.0, 45.0],
-            [18.0, 72.0, 88.0, 50.0],
-            [22.0, 68.0, 82.0, 42.0],
+            [15.0, 12.0, 10.0, 70.0, 90.0, 40.0],
+            [20.0, 18.0, 20.0, 65.0, 85.0, 35.0],
+            [25.0, 22.0, 30.0, 60.0, 80.0, 45.0],
+            [18.0, 15.0, 12.0, 72.0, 88.0, 50.0],
+            [22.0, 19.0, 25.0, 68.0, 82.0, 42.0],
         ]
 
         model = AnomalyModel()
@@ -48,36 +50,36 @@ class TestAnomalyModel(unittest.TestCase):
 
     def test_prediction(self):
         training_data = [
-            [15.0, 70.0, 90.0, 40.0],
-            [20.0, 65.0, 85.0, 35.0],
-            [25.0, 60.0, 80.0, 45.0],
-            [18.0, 72.0, 88.0, 50.0],
-            [22.0, 68.0, 82.0, 42.0],
+            [15.0, 12.0, 10.0, 70.0, 90.0, 40.0],
+            [20.0, 18.0, 20.0, 65.0, 85.0, 35.0],
+            [25.0, 22.0, 30.0, 60.0, 80.0, 45.0],
+            [18.0, 15.0, 12.0, 72.0, 88.0, 50.0],
+            [22.0, 19.0, 25.0, 68.0, 82.0, 42.0],
         ]
 
         model = AnomalyModel()
         model.fit(training_data)
 
         prediction = model.predict(
-            [19.0, 69.0, 87.0, 41.0]
+            [19.0, 16.0, 15.0, 69.0, 87.0, 41.0]
         )
 
         self.assertIn(prediction, [1, -1])
 
     def test_anomaly_score(self):
         training_data = [
-            [15.0, 70.0, 90.0, 40.0],
-            [20.0, 65.0, 85.0, 35.0],
-            [25.0, 60.0, 80.0, 45.0],
-            [18.0, 72.0, 88.0, 50.0],
-            [22.0, 68.0, 82.0, 42.0],
+            [15.0, 12.0, 10.0, 70.0, 90.0, 40.0],
+            [20.0, 18.0, 20.0, 65.0, 85.0, 35.0],
+            [25.0, 22.0, 30.0, 60.0, 80.0, 45.0],
+            [18.0, 15.0, 12.0, 72.0, 88.0, 50.0],
+            [22.0, 19.0, 25.0, 68.0, 82.0, 42.0],
         ]
 
         model = AnomalyModel()
         model.fit(training_data)
 
         score = model.anomaly_score(
-            [19.0, 69.0, 87.0, 41.0]
+            [19.0, 16.0, 15.0, 69.0, 87.0, 41.0]
         )
 
         self.assertIsInstance(score, float)

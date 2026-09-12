@@ -10,30 +10,40 @@ class TestTrainer(unittest.TestCase):
         self.feature_records = [
             {
                 "average_centipawn_loss": 15.0,
+                "median_centipawn_loss": 12.0,
+                "high_centipawn_loss_percentage": 10.0,
                 "top1_agreement_percentage": 70.0,
                 "top3_agreement_percentage": 90.0,
                 "analyzed_move_count": 40,
             },
             {
                 "average_centipawn_loss": 20.0,
+                "median_centipawn_loss": 18.0,
+                "high_centipawn_loss_percentage": 20.0,
                 "top1_agreement_percentage": 65.0,
                 "top3_agreement_percentage": 85.0,
                 "analyzed_move_count": 35,
             },
             {
                 "average_centipawn_loss": 25.0,
+                "median_centipawn_loss": 22.0,
+                "high_centipawn_loss_percentage": 30.0,
                 "top1_agreement_percentage": 60.0,
                 "top3_agreement_percentage": 80.0,
                 "analyzed_move_count": 45,
             },
             {
                 "average_centipawn_loss": 18.0,
+                "median_centipawn_loss": 15.0,
+                "high_centipawn_loss_percentage": 12.0,
                 "top1_agreement_percentage": 72.0,
                 "top3_agreement_percentage": 88.0,
                 "analyzed_move_count": 50,
             },
             {
                 "average_centipawn_loss": 22.0,
+                "median_centipawn_loss": 19.0,
+                "high_centipawn_loss_percentage": 25.0,
                 "top1_agreement_percentage": 68.0,
                 "top3_agreement_percentage": 82.0,
                 "analyzed_move_count": 42,
@@ -56,7 +66,7 @@ class TestTrainer(unittest.TestCase):
         )
 
         prediction = model.predict(
-            [19.0, 69.0, 87.0, 41.0]
+            [19.0, 16.0, 15.0, 69.0, 87.0, 41.0]
         )
 
         self.assertIn(prediction, [1, -1])
@@ -68,7 +78,7 @@ class TestTrainer(unittest.TestCase):
         )
 
         prediction = model.predict(
-            [19.0, 69.0, 87.0, 41.0]
+            [19.0, 16.0, 15.0, 69.0, 87.0, 41.0]
         )
 
         self.assertIn(prediction, [1, -1])

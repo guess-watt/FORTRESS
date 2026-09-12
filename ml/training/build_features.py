@@ -17,10 +17,12 @@ def build_features():
     processed_games = 0
 
     fieldnames = [
-        "average_centipawn_loss",
-        "top1_agreement_percentage",
-        "top3_agreement_percentage",
-        "analyzed_move_count",
+    "average_centipawn_loss",
+    "median_centipawn_loss",
+    "high_centipawn_loss_percentage",
+    "top1_agreement_percentage",
+    "top3_agreement_percentage",
+    "analyzed_move_count",
     ]
 
     with open(SOURCE_PGN, encoding="utf-8") as pgn_file:

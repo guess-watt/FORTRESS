@@ -55,6 +55,36 @@ class TestFeatureExtractor(unittest.TestCase):
             75.0,
         )
 
+    def test_median_centipawn_loss(self):
+        results = [
+            {"centipawn_loss": 10, "engine_rank": 1, "engine_agreement": True},
+            {"centipawn_loss": 20, "engine_rank": 2, "engine_agreement": True},
+            {"centipawn_loss": 30, "engine_rank": 3, "engine_agreement": True},
+            {"centipawn_loss": 100, "engine_rank": None, "engine_agreement": False},
+        ]
+
+        features = extract_features(results)
+
+        self.assertEqual(
+            features["median_centipawn_loss"],
+            25.0,
+        )
+
+    def test_high_centipawn_loss_percentage(self):
+        results = [
+            {"centipawn_loss": 10, "engine_rank": 1, "engine_agreement": True},
+            {"centipawn_loss": 50, "engine_rank": 2, "engine_agreement": True},
+            {"centipawn_loss": 80, "engine_rank": 3, "engine_agreement": True},
+            {"centipawn_loss": 20, "engine_rank": None, "engine_agreement": False},
+        ]
+
+        features = extract_features(results)
+
+        self.assertEqual(
+            features["high_centipawn_loss_percentage"],
+            50.0,
+        )
+
 
     def test_analyzed_move_count(self):
         results = [

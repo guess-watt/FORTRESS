@@ -3,6 +3,8 @@ from sklearn.ensemble import IsolationForest
 
 FEATURE_NAMES = [
     "average_centipawn_loss",
+    "median_centipawn_loss",
+    "high_centipawn_loss_percentage",
     "top1_agreement_percentage",
     "top3_agreement_percentage",
     "analyzed_move_count",
