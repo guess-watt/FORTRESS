@@ -219,3 +219,7 @@ __marimo__/
 
 # Stockfish binary
 chess_engine/stockfish/
+
+
+# Data
+data/

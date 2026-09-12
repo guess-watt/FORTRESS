@@ -40,31 +40,34 @@ def analyze_game(moves: list[str], depth: int = 15):
             ]
 
             best_move = top_engine_moves[0]
-
             evaluation_before = analysis_before["moves"][0]["evaluation"]
 
             # Play the candidate move.
             board.push(move)
 
-            # Engine evaluation after the move.
-            analysis_after = analyzer.analyze_position(
-                board,
-                top_n=1,
+            if board.is_game_over(claim_draw=True):
+                evaluation_after_for_player = evaluation_before
+            else:
+                # Engine evaluation after the move.
+                analysis_after = analyzer.analyze_position(
+                    board,
+                    top_n=1,
+                )
+
+                evaluation_after = analysis_after["moves"][0]["evaluation"]
+
+                # Convert opponent perspective back to the
+                # perspective of the player who made the move.
+                evaluation_after_for_player = -evaluation_after
+
+            # Calculate centipawn loss.
+            centipawn_loss = min(
+                1000,
+                max(
+                    0,
+                    evaluation_before - evaluation_after_for_player,
+                ),
             )
-
-            evaluation_after = analysis_after["moves"][0]["evaluation"]
-            # Stockfish reports evaluation from the side-to-move
-            # perspective. After the move, that is the opponent.
-            # Convert it back to the perspective of the player
-            # who made the move.
-            evaluation_after_for_player = -evaluation_after
-
-            # Centipawn loss from the player's perspective.
-            centipawn_loss = max(
-                0,
-                evaluation_before - evaluation_after_for_player,
-            )
-
             results.append(
                 {
                     "ply": ply,
@@ -83,9 +86,7 @@ def analyze_game(moves: list[str], depth: int = 15):
                         else None
                     ),
                     "engine_agreement": (
-                        True
-                        if move_uci in top_engine_moves
-                        else False
+                        move_uci in top_engine_moves
                     ),
                     "evaluation_before": evaluation_before,
                     "evaluation_after": evaluation_after_for_player,
