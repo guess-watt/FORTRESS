@@ -1,3 +1,7 @@
 chess==1.11.2
 python-chess==1.999
 scikit-learn==1.9.0
+fastapi==0.116.1
+uvicorn==0.35.0
+joblib==1.5.3
+httpx==0.28.1

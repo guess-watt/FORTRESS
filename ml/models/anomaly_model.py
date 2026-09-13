@@ -1,5 +1,5 @@
 from sklearn.ensemble import IsolationForest
-
+import joblib
 
 FEATURE_NAMES = [
     "average_centipawn_loss",
@@ -89,3 +89,22 @@ class AnomalyModel:
         return float(
             self.model.score_samples([feature_vector])[0]
         )
+
+    def save(self, path: str):
+        """
+        Save the trained model to disk.
+        """
+
+        joblib.dump(self.model, path)
+
+
+    @classmethod
+    def load(cls, path: str):
+        """
+        Load a trained model from disk.
+        """
+
+        instance = cls()
+        instance.model = joblib.load(path)
+
+        return instance
