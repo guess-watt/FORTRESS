@@ -223,3 +223,7 @@ chess_engine/stockfish/
 
 # Data
 data/
+
+
+# ML model artifacts
+*.joblib
